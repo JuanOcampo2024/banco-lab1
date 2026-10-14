@@ -1,22 +1,42 @@
-# Banco UdeA - Laboratorio 1
+# Banco UdeA - Laboratorio 1 y 2
 
-## Backend (Spring Boot 3.3 / Java 17 / MySQL)
-Requisitos: JDK 17, Maven, MySQL en localhost:3306 (usuario root, clave 123456789).
-La base de datos `banco2025` se crea sola.
+[![CI/CD Pipeline](https://github.com/JuanOcampo2024/banco-lab1/actions/workflows/build.yml/badge.svg)](https://github.com/JuanOcampo2024/banco-lab1/actions/workflows/build.yml)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=JuanOcampo2024_banco-lab1&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=JuanOcampo2024_banco-lab1)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=JuanOcampo2024_banco-lab1&metric=coverage)](https://sonarcloud.io/summary/new_code?id=JuanOcampo2024_banco-lab1)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=JuanOcampo2024_banco-lab1&metric=bugs)](https://sonarcloud.io/summary/new_code?id=JuanOcampo2024_banco-lab1)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=JuanOcampo2024_banco-lab1&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=JuanOcampo2024_banco-lab1)
+
+Aplicación bancaria: API REST (Spring Boot) + frontend (React).
+
+## Estructura
+- `backend/`  API REST Spring Boot 3.3 / Java 17 / MySQL
+- `frontend/` React + Vite + Axios
+- `.github/workflows/build.yml` pipeline CI/CD
+
+## Pipeline
+tests (JUnit + JaCoCo) -> SonarCloud -> build JAR -> imagen Docker (Docker Hub) -> deploy en Render
+
+## Ejecutar el backend
+Crea `backend/src/main/resources/application-local.properties` con:
+
+    spring.datasource.password=TU_CLAVE_MYSQL
+
+y luego:
 
     cd backend
-    mvn spring-boot:run        # o abrir la carpeta en IntelliJ y ejecutar BancoudeaApplication
+    mvn spring-boot:run
 
-API en http://localhost:8080/api
-- GET/POST            /customers
-- GET/PUT/DELETE      /customers/{id}
-- POST                /transactions   {senderAccountNumber, receiverAccountNumber, amount}
-- GET                 /transactions, /transactions/{id}
-- GET                 /transactions/account/{accountNumber}
+## Pruebas y cobertura
 
-## Frontend (React + Vite + Axios)
-Requisitos: Node.js LTS.
+    cd backend
+    mvn clean verify     # reporte en target/site/jacoco/index.html
+
+## Docker
+
+    docker run -p 8080:8080 -e DB_URL=... -e DB_USER=... -e DB_PASSWORD=... TU_USUARIO_DOCKER/bancoudea:latest
+
+## Frontend
 
     cd frontend
     npm install
-    npm run dev                # http://localhost:5173
+    npm run dev
